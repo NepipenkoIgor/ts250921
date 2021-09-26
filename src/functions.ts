@@ -22,27 +22,27 @@
 // 	return `Average is ${avg}`;
 // }
 
-// function isString(arg: sn): arg is string {
-// 	return !!(arg as any).blink;
-// }
+function isString(arg: sn): arg is string {
+	return !!(arg as any).blink;
+}
 //
-// type sn = string | number;
-//
-// function average(a: string, b: number): string;
-// function average(a: number, b: string): string;
-// function average(a: number, b: number, c: number): string;
-// function average(...args: sn[]): string {
-// 	let total: number = 0;
-// 	for (let arg of args) {
-// 		if (isString(arg)) {
-// 			total += Number(arg);
-// 			continue;
-// 		}
-// 		total += arg;
-// 	}
-// 	const avg: number = total / args.length;
-// 	return `Average is ${avg}`;
-// }
+type sn = string | number;
+
+function average(a: string, b: number): string;
+function average(a: number, b: string): string;
+function average(a: number, b: number, c: number): string;
+function average(...args: sn[]): string {
+	let total: number = 0;
+	for (let arg of args) {
+		if (isString(arg)) {
+			total += Number(arg);
+			continue;
+		}
+		total += arg;
+	}
+	const avg: number = total / args.length;
+	return `Average is ${avg}`;
+}
 //
 // average(1, '2');
 // average('1', 2);
