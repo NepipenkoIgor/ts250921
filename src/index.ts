@@ -1,94 +1,48 @@
-// import '../assets/css/style.css';
+import '../assets/css/style.css';
+import {
+	CheckTypeInRuntime,
+	Debounce,
+	LogInput,
+	SavePersistence,
+	RangeV,
+	Validate,
+} from './decorators';
 /* eslint-disable */
 
-// function average(a: number, b: number, c: number): string {
-// 	const avg: number = (a + b + c) / 3;
-// 	return `Average is ${avg}`;
+// function dec(fn){
+// 	return fn1(...args){
+// 		return  fn.call(this, ...args)
+// 	}
 // }
 
-// function average(a: number, b?: number, c?: number): string {
-// 	if (b === undefined) {
-// 		b = 0;
-// 	}
-// 	if (c === undefined) {
-// 		c = 0;
-// 	}
-// 	const avg: number = (a + b + c) / 3;
-// 	return `Average is ${avg}`;
-// }
+class SearchComponent {
+	@CheckTypeInRuntime
+	@SavePersistence
+	public initialValue!: string;
 
-// function average(a: number, b: number = 0, c: number = 0): string {
-// 	const avg: number = (a + b + c) / 3;
-// 	return `Average is ${avg}`;
-// }
+	public constructor(private readonly inputEl: HTMLInputElement) {
+		console.log(this.initialValue);
+		this.inputEl.addEventListener<'input'>('input', this.onSearch.bind(this));
+	}
 
-// function isString(arg: sn): arg is string {
-// 	return !!(arg as any).blink;
-// }
-//
-// type sn = string | number;
-//
-// function average(a: string, b: number): string;
-// function average(a: number, b: string): string;
-// function average(a: number, b: number, c: number): string;
-// function average(...args: sn[]): string {
-// 	let total: number = 0;
-// 	for (let arg of args) {
-// 		if (isString(arg)) {
-// 			total += Number(arg);
-// 			continue;
-// 		}
-// 		total += arg;
-// 	}
-// 	const avg: number = total / args.length;
-// 	return `Average is ${avg}`;
-// }
-//
-// average(1, '2');
-// average('1', 2);
-// average(1);
-// average(1, 2);
-// average(1, 2);
-// average(1, 2, 1, 2, 2);
-// average(1, 2, 2, 43, 4, 2, 3, 4);
-// average(1, '2', 3);
-// const a: number = average(1, 2, 3);
-//
-// function test(show: true): { test: number; value: () => string };
-// function test(show: false): { test: number };
-// function test(show: boolean) {
-// 	if (show) {
-// 		return {
-// 			test: 1,
-// 			value: () => 'some text',
-// 		};
-// 	}
-// 	return {
-// 		test: 1,
-// 	};
-// }
-//
-// type IOverload = {
-// 	(param: number): number[];
-// 	(param: object): object[];
-// };
-//
-// const overloadedArrowFunc: IOverload = (param: any) => {
-// 	return [param, param];
-// };
-//
-// let val = overloadedArrowFunc(4);
+	@Debounce(300)
+	@LogInput
+	private onSearch(_e: Event): void {
+		this.initialValue = (_e.target as HTMLInputElement).value;
+		this.updatePercentage(0, 40);
+	}
 
-// function getFullName(this: { name: string; surname: string }) {
-// 	return `${this.name} ${this.surname}`;
-// }
-//
-// let account = {
-// 	name: 'Ihor',
-// 	surname: 'Nepipenko',
-// 	getFullName,
-// };
-//
-// account.getFullName();
-//
-// document.addEventListener<'click'>('click', getFullName.bind(account));
+	@Validate
+	public updatePercentage(oldValue: number, @RangeV(30, 50) newValue: number) {
+		console.log(oldValue, newValue);
+	}
+}
+
+const inputEl: HTMLInputElement = document.querySelector('input') as HTMLInputElement;
+
+const sc = new SearchComponent(inputEl);
+
+setTimeout(() => {
+	// (sc.initialValue as any) = 12;
+	sc.updatePercentage(40, 89);
+}, 7000);
